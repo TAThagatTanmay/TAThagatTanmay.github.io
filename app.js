@@ -1,4 +1,3 @@
-// Enhanced Face Recognition Attendance System - Optimized for 80-90 Students
 class FaceAttendanceSystem {
   constructor() {
     this.currentStream = null;
@@ -15,11 +14,11 @@ class FaceAttendanceSystem {
     this.processingDetection = false;
 
     this.config = {
-      captureInterval: 600000, // 10 minutes
-      sessionDuration: 3000000, // 50 minutes
+      captureInterval: 10000, // 10 seconds
+      sessionDuration: 2000, // 2 seconds, change in production
       requiredDetections: 3,
       totalCaptures: 5,
-      api_endpoint: "https://complete-attendance-system.onrender.com",
+      api_endpoint: "https://complete-attendance-system.onrender.com",  // Replace AFTER DEPLOY NOW (TODO)
       detection_confidence: 0.65,
       face_match_threshold: 0.55,
       max_students: 100,
@@ -36,39 +35,27 @@ class FaceAttendanceSystem {
     this.initializeApp();
   }
 
-  // Arrow function to preserve 'this' context
   loadFaceModels = async () => {
     try {
       this.showStatus("Loading face recognition models from local folder...", "info");
-      
-      // Load models from local /models folder
       const MODEL_URL = './models';
-      
       console.log("Loading TinyFaceDetector model...");
       await faceapi.nets.tinyFaceDetector.loadFromUri(MODEL_URL);
-      
       console.log("Loading FaceLandmark68Net model...");
       await faceapi.nets.faceLandmark68Net.loadFromUri(MODEL_URL);
-      
       console.log("Loading FaceRecognitionNet model...");
       await faceapi.nets.faceRecognitionNet.loadFromUri(MODEL_URL);
-
       this.modelsLoaded = true;
       this.showStatus("Face recognition models loaded successfully from local folder", "success");
-
       this.detectionOptions = new faceapi.TinyFaceDetectorOptions({
         inputSize: 416,
         scoreThreshold: 0.3
       });
-
       console.log("Face-api.js models loaded successfully!");
-      
     } catch (error) {
       console.error("Failed to load face models from local folder:", error);
       this.showStatus("Failed to load face recognition models. Check if /models folder exists.", "error");
       this.modelsLoaded = false;
-      
-      // Fallback to CDN if local loading fails
       console.log("Attempting fallback to CDN models...");
       try {
         const CDN_MODEL_URL = "https://cdn.jsdelivr.net/npm/face-api.js@0.22.2/weights";
@@ -98,6 +85,7 @@ class FaceAttendanceSystem {
     this.showLoginScreen();
   };
 
+  //Works
   loadStudents = async () => {
     try {
       const response = await this.apiCall("/students");
@@ -162,7 +150,6 @@ class FaceAttendanceSystem {
       console.log("API login failed, trying fallback login:", error.message);
     }
 
-    // Fallback authentication for demo
     if (
       (username === "teacher" && password === "teach123") ||
       (username === "2500032073" && password === "2500032073")
@@ -342,9 +329,9 @@ class FaceAttendanceSystem {
         .withFaceLandmarks()
         .withFaceDescriptors();
       
+      console.log("Face detection completed:", detections);
       console.log(`Detected ${detections.length} faces in capture ${this.captureCount}`);
       
-      // Update UI with detection count
       const detectedCountEl = document.getElementById("detectedCount");
       if (detectedCountEl) {
         detectedCountEl.textContent = detections.length;
@@ -378,7 +365,7 @@ class FaceAttendanceSystem {
         if (attendance) {
           attendance.detections++;
           attendance.timestamps.push(now);
-          attendance.confidenceScores.push(0.85); // Mock confidence score
+          attendance.confidenceScores.push(0.85);
           attendance.status = attendance.detections >= this.config.requiredDetections ? "present" : "partial";
           processedCount++;
         }
@@ -420,7 +407,6 @@ class FaceAttendanceSystem {
         else absentCount++;
       });
     
-    // Update summary counts
     document.getElementById("totalStudents").textContent = this.attendanceData.size;
     document.getElementById("presentCount").textContent = presentCount;
     document.getElementById("partialCount").textContent = partialCount;
@@ -543,7 +529,6 @@ class FaceAttendanceSystem {
         document.getElementById("uploadAttendanceBtn").classList.add("hidden");
         document.getElementById("startSessionBtn").disabled = false;
         
-        // Reset for next session
         this.attendanceData.clear();
         this.updateAttendanceDisplay();
       }
@@ -554,7 +539,6 @@ class FaceAttendanceSystem {
   };
 }
 
-// Initialize the system when DOM content is loaded
 window.addEventListener("DOMContentLoaded", () => {
   console.log("Initializing Face Attendance System...");
   new FaceAttendanceSystem();
