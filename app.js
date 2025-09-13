@@ -14,8 +14,8 @@ class FaceAttendanceSystem {
     this.processingDetection = false;
 
     this.config = {
-      captureInterval: 10000, // 10 seconds
-      sessionDuration: 2000, // 2 seconds, change in production
+      captureInterval: 2000, // 2 seconds between captures
+      sessionDuration: 10000, // 10 seconds, time after which session auto-ends
       requiredDetections: 3,
       totalCaptures: 5,
       api_endpoint: "https://complete-attendance-system.onrender.com",  // Replace AFTER DEPLOY NOW (TODO)
