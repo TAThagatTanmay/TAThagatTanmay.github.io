@@ -265,7 +265,7 @@ class FaceAttendanceSystem {
     this.startTime = Date.now();
     this.initializeAttendance(section);
     this.startCaptureTimer();
-    
+
     document.getElementById("startSessionBtn").disabled = true;
     document.getElementById("endSessionBtn").classList.remove("hidden");
     document.getElementById("progressSection").style.display = "block";
@@ -282,6 +282,7 @@ class FaceAttendanceSystem {
     );
     
     studentsInSection.forEach((student) => {
+      console.log(student)
       this.attendanceData.set(student.id, {
         studentId: student.id,
         name: student.name,
