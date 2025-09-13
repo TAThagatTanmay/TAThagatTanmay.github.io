@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Attendance Analytics Dashboard</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <!-- Header -->
+    <header class="dashboard-header">
+        <div class="container">
+            <div class="header-content">
+                <div class="title-section">
+                    <h1>Smart Attendance Analytics Dashboard</h1>
+                    <p>Real-time insights for better academic planning</p>
+                </div>
+                <div class="teacher-info">
+                    <div class="teacher-profile">
+                        <i class="fas fa-user-circle"></i>
+                        <div class="teacher-details">
+                            <span class="teacher-name">Dr. Computer Teacher</span>
+                            <div class="current-time" id="currentDateTime"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <div class="container">
+            
+            <!-- Summary Cards -->
+            <section class="summary-section">
+                <div class="summary-cards">
+                    <div class="summary-card" data-filter="all">
+                        <div class="card-icon">
+                            <i class="fas fa-users"></i>
+                        </div>
+                        <div class="card-content">
+                            <h3 id="totalStudents">0</h3>
+                            <p>Total Students</p>
+                        </div>
+                    </div>
+                    
+                    <div class="summary-card" data-filter="attendance">
+                        <div class="card-icon">
+                            <i class="fas fa-chart-line"></i>
+                        </div>
+                        <div class="card-content">
+                            <h3 id="overallAttendance">0%</h3>
+                            <p>Overall Attendance</p>
+                        </div>
+                    </div>
+                    
+                    <div class="summary-card high-risk" data-filter="high-risk">
+                        <div class="card-icon">
+                            <i class="fas fa-exclamation-triangle"></i>
+                        </div>
+                        <div class="card-content">
+                            <h3 id="highRiskStudents">0</h3>
+                            <p>High Risk Students</p>
+                        </div>
+                    </div>
+                    
+                    <div class="summary-card" data-filter="sections">
+                        <div class="card-icon">
+                            <i class="fas fa-school"></i>
+                        </div>
+                        <div class="card-content">
+                            <h3 id="activeSections">0</h3>
+                            <p>Active Sections</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Filters and Search -->
+            <section class="filters-section">
+                <div class="filters-container">
+                    <div class="search-box">
+                        <i class="fas fa-search"></i>
+                        <input type="text" id="studentSearch" placeholder="Search students...">
+                    </div>
+                    
+                    <div class="filter-controls">
+                        <select id="sectionFilter" class="form-control">
+                            <option value="">All Sections</option>
+                            <option value="S33">S33</option>
+                            <option value="S34">S34</option>
+                            <option value="S35">S35</option>
+                        </select>
+                        
+                        <select id="riskFilter" class="form-control">
+                            <option value="">All Risk Levels</option>
+                            <option value="High">High Risk</option>
+                            <option value="Medium">Medium Risk</option>
+                            <option value="Low">Low Risk</option>
+                        </select>
+                        
+                        <button class="btn btn--primary" id="exportReport">
+                            <i class="fas fa-download"></i>
+                            Export Report
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- At-Risk Students Section -->
+            <section class="at-risk-section">
+                <h2>Students Requiring Immediate Attention</h2>
+                <div id="atRiskStudents" class="at-risk-container">
+                    <!-- At-risk students will be populated by JavaScript -->
+                </div>
+            </section>
+
+            <!-- Dashboard Grid -->
+            <div class="dashboard-grid">
+                
+                <!-- Attendance Trends Chart -->
+                <section class="chart-section">
+                    <div class="card">
+                        <div class="card__body">
+                            <h3>Attendance Trends (Last 30 Days)</h3>
+                            <div class="chart-container" style="position: relative; height: 300px;">
+                                <canvas id="attendanceChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Section Analytics -->
+                <section class="section-analytics">
+                    <div class="card">
+                        <div class="card__body">
+                            <h3>Section Analytics</h3>
+                            <div class="section-table">
+                                <table>
+                                    <thead>
+                                        <tr>
+                                            <th>Section</th>
+                                            <th>Students</th>
+                                            <th>Avg Attendance</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="sectionTableBody">
+                                        <!-- Section data will be populated by JavaScript -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+            </div>
+
+            <!-- All Students List -->
+            <section class="students-list-section">
+                <h2>All Students</h2>
+                <div id="allStudentsList" class="students-grid">
+                    <!-- All students will be populated by JavaScript -->
+                </div>
+            </section>
+
+        </div>
+    </main>
+
+    <!-- Student Details Modal -->
+    <div id="studentModal" class="modal hidden">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="modalStudentName">Student Details</h2>
+                <button class="close-modal" id="closeModal">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body" id="modalBody">
+                <!-- Modal content will be populated by JavaScript -->
+            </div>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
