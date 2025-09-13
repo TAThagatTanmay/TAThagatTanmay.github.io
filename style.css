@@ -1,0 +1,222 @@
+/* Reset and base */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: #333;
+  min-height: 100vh;
+  padding: 20px;
+  line-height: 1.6;
+}
+
+.container {
+  max-width: 1100px;
+  margin: 0 auto;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.15);
+  padding: 30px;
+}
+
+h1, h2, h3 {
+  color: #222;
+  margin-bottom: 20px;
+  font-weight: 600;
+}
+
+form {
+  margin-bottom: 30px;
+}
+
+input, select, textarea {
+  width: 100%;
+  padding: 12px 15px;
+  margin-top: 6px;
+  margin-bottom: 20px;
+  border: 2px solid #ddd;
+  border-radius: 10px;
+  font-size: 15px;
+  transition: border-color 0.3s ease;
+}
+
+input:focus, select:focus, textarea:focus {
+  border-color: #667eea;
+  outline: none;
+}
+
+button {
+  background-color: #667eea;
+  color: white;
+  padding: 14px 28px;
+  border: none;
+  border-radius: 10px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  font-weight: 600;
+}
+
+button:hover {
+  background-color: #556ccd;
+}
+
+.status-message {
+  margin-bottom: 20px;
+  padding: 14px 20px;
+  border-radius: 12px;
+  font-weight: 600;
+}
+
+.status--success {
+  background-color: #d4edda;
+  color: #155724;
+  border: 1px solid #c3e6cb;
+}
+
+.status--error {
+  background-color: #f8d7da;
+  color: #721c24;
+  border: 1px solid #f1b2b7;
+}
+
+.status--info {
+  background-color: #cce7ff;
+  color: #004085;
+  border: 1px solid #b3d7ff;
+}
+
+.attendance-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+  font-size: 14px;
+}
+
+.attendance-table th, .attendance-table td {
+  padding: 12px 15px;
+  border: 1px solid #ddd;
+  text-align: left;
+}
+
+.attendance-table th {
+  background-color: #f0f0f8;
+  font-weight: 700;
+}
+
+.status-badge {
+  padding: 6px 12px;
+  font-size: 12px;
+  border-radius: 16px;
+  font-weight: 700;
+  color: white;
+  text-transform: uppercase;
+  display: inline-block;
+}
+
+.status-badge--present {
+  background-color: #28a745;
+}
+
+.status-badge--partial {
+  background-color: #ffc107;
+  color: #212529;
+}
+
+.status-badge--absent {
+  background-color: #dc3545;
+}
+
+.video-container {
+  position: relative;
+  margin: 30px 0;
+}
+
+#videoFeed {
+  width: 100%;
+  max-width: 720px;
+  border-radius: 14px;
+  box-shadow: 0 0 20px rgba(102, 126, 234, 0.5);
+}
+
+.overlay-canvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.video-source-buttons {
+  display: flex;
+  gap: 15px;
+  margin-bottom: 25px;
+}
+
+.video-source-button {
+  flex-grow: 1;
+  padding: 20px;
+  border: 2px solid #ddd;
+  border-radius: 14px;
+  background: white;
+  cursor: pointer;
+  text-align: center;
+  transition: border-color 0.3s ease, background-color 0.3s ease;
+}
+
+.video-source-button.active,
+.video-source-button:hover {
+  border-color: #667eea;
+  background-color: #e7ecff;
+}
+
+.video-source-button h3 {
+  margin-bottom: 10px;
+  color: #444;
+}
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit,minmax(180px,1fr));
+  gap: 25px;
+  margin-top: 25px;
+}
+
+.stat-card {
+  background: #f6f8ff;
+  border-radius: 14px;
+  padding: 24px;
+  text-align: center;
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.15);
+}
+
+.stat-card h3 {
+  font-size: 28px;
+  margin-bottom: 8px;
+  color: #2c3e50;
+}
+
+.session-progress {
+  background: #e9ecef;
+  border-radius: 12px;
+  height: 14px;
+  margin-top: 20px;
+  overflow: hidden;
+}
+
+.session-progress-bar {
+  background: linear-gradient(90deg, #667eea, #5a67d8);
+  height: 100%;
+  width: 0%;
+  transition: width 0.4s ease-in-out;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .video-source-buttons {
+    flex-direction: column;
+  }
+}
+
