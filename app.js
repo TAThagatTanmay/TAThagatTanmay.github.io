@@ -308,7 +308,6 @@ class FaceAttendanceSystem {
     
     this.sessionTimer = setTimeout(() => {
       if (this.isSessionActive) {
-        alert("Session time ended. Ending session now.");
         this.endSession();
       }
     }, this.config.sessionDuration);
@@ -553,6 +552,7 @@ class FaceAttendanceSystem {
     
     document.getElementById("endSessionBtn").classList.add("hidden");
     document.getElementById("uploadAttendanceBtn").classList.remove("hidden");
+    document.getElementById('uploadAttendanceBtn').disabled = false;
     
     this.showStatus("Session ended. Ready to upload attendance data.", "success");
   };
