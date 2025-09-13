@@ -308,6 +308,7 @@ class FaceAttendanceSystem {
     
     this.sessionTimer = setTimeout(() => {
       if (this.isSessionActive) {
+        alert("Session time ended. Ending session now.");
         this.endSession();
       }
     }, this.config.sessionDuration);
