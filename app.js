@@ -365,10 +365,25 @@ class FaceAttendanceSystem {
         if (attendance) {
           attendance.detections++;
           attendance.timestamps.push(now);
-          attendance.confidenceScores.push(0.85);
+          attendance.confidenceScores.push(detection.detection._score);
           attendance.status = attendance.detections >= this.config.requiredDetections ? "present" : "partial";
           processedCount++;
-        }
+
+          const descriptorArray = Object.values(detection.descriptor);
+          const facePayload = {
+            person_id: studentId,
+            face_descriptor: descriptorArray,
+            confidence_score: detection.detection._score,
+            enrollment_method: 'auto',
+            photo_url: null,
+            created_at: now.toISOString(),
+            updated_at: now.toISOString(),
+            is_active: true
+          };
+
+          console.log("🔎 Face Encoding Payload for DB:");
+          console.log(JSON.stringify(facePayload, null, 2));
+          }
       }
     });
     
