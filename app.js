@@ -263,7 +263,7 @@ class FaceAttendanceSystem {
     this.isSessionActive = true;
     this.captureCount = 0;
     this.startTime = Date.now();
-    this.initializeAttendance(section);
+    this.initializeAttendance(section);   //1
     this.startCaptureTimer();
 
     document.getElementById("startSessionBtn").disabled = true;
@@ -277,6 +277,7 @@ class FaceAttendanceSystem {
 
   initializeAttendance = (sectionId) => {
     this.attendanceData.clear();
+    //Check for students in section S33, S34, S35
     const studentsInSection = this.students.filter(
       (student) => student.section === this.sections.find((sec) => sec.id == sectionId)?.name
     );
@@ -330,10 +331,10 @@ class FaceAttendanceSystem {
         .withFaceLandmarks()
         .withFaceDescriptors();
       
-      console.log("Face detection completed:", detections);
       console.log(`Detected ${detections.length} faces in capture ${this.captureCount}`);
       
       const detectedCountEl = document.getElementById("detectedCount");
+      //Frontend call to change the detected count
       if (detectedCountEl) {
         detectedCountEl.textContent = detections.length;
       }
@@ -354,25 +355,41 @@ class FaceAttendanceSystem {
   };
 
   processDetections = async (detections) => {
-    const now = new Date();
-    const keys = Array.from(this.attendanceData.keys());
-    let processedCount = 0;
-    
-    detections.forEach((detection, index) => {
-      if (index < keys.length) {
-        const studentId = keys[index];
-        const attendance = this.attendanceData.get(studentId);
-        
-        if (attendance) {
-          attendance.detections++;
-          attendance.timestamps.push(now);
-          attendance.confidenceScores.push(detection.detection._score);
-          attendance.status = attendance.detections >= this.config.requiredDetections ? "present" : "partial";
+    try{
+      const now = new Date();
+      let processedCount = 0;
+
+      detections.forEach((detection) => {
+        const descriptorArray = Object.values(detection.descriptor);
+
+        let bestMatch = null;
+        let bestDistance = Infinity;
+
+        this.attendanceData.forEach((attendance, studentId) => {
+          const student = this.students.find((s) => s.id === studentId);
+          
+          if (student && student.face_descriptor) {
+            const distance = this.computeEuclideanDistance(
+              descriptorArray,
+              student.face_descriptor
+            );
+
+            if (distance < bestDistance) {
+              bestDistance = distance;
+              bestMatch = attendance;
+            }
+          }
+        });
+
+        if (bestMatch && bestDistance < 0.6) {
+          bestMatch.detections++;
+          bestMatch.timestamps.push(now);
+          bestMatch.confidenceScores.push(detection.detection._score);
+          bestMatch.status = bestMatch.detections >= this.config.requiredDetections ? "present" : "partial";
           processedCount++;
 
-          const descriptorArray = Object.values(detection.descriptor);
           const facePayload = {
-            person_id: studentId,
+            person_id: bestMatch.studentId,
             face_descriptor: descriptorArray,
             confidence_score: detection.detection._score,
             enrollment_method: 'auto',
@@ -382,14 +399,27 @@ class FaceAttendanceSystem {
             is_active: true
           };
 
-          console.log("🔎 Face Encoding Payload for DB:");
-          console.log(JSON.stringify(facePayload, null, 2));
-          }
-      }
-    });
-    
-    console.log(`Processed detections for ${processedCount} students`);
+          console.log(`✅ Matched student: ${bestMatch.name} (distance: ${bestDistance.toFixed(3)})`);
+          console.log("🔎 Face Encoding Payload for DB:", JSON.stringify(facePayload, null, 2));
+        } else {
+          console.log(`❌ Unknown face detected (best distance: ${bestDistance.toFixed(3)})`);
+        }
+      });
+      console.log(`Processed detections for ${processedCount} students`);
+    } catch (error) {
+      console.error("Error processing detections:", error);
+    }
   };
+
+  computeEuclideanDistance = (desc1, desc2) => {
+    let sum = 0;
+    for (let i = 0; i < desc1.length; i++) {
+      const diff = desc1[i] - desc2[i];
+      sum += diff * diff;
+    }
+    return Math.sqrt(sum);
+  };
+
 
   updateAttendanceDisplay = () => {
     const tbody = document.querySelector("#attendanceTable tbody");
