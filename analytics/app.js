@@ -59,7 +59,7 @@ const appData = {
     },
     {
       "student_id": 5,
-      "name": "Rahul Kumar",
+      "name": "Anitha Reddie",
       "id_number": "2500032001",
       "section": "S33",
       "attendance_rate": 72.7,
@@ -73,7 +73,7 @@ const appData = {
     },
     {
       "student_id": 6,
-      "name": "Priya Patel",
+      "name": "Kaniskha",
       "id_number": "2500032002",
       "section": "S33",
       "attendance_rate": 88.6,
@@ -87,7 +87,7 @@ const appData = {
     },
     {
       "student_id": 7,
-      "name": "Amit Singh",
+      "name": "Prateek Lohiya",
       "id_number": "2500032003",
       "section": "S34",
       "attendance_rate": 59.1,
@@ -101,7 +101,7 @@ const appData = {
     },
     {
       "student_id": 8,
-      "name": "Sneha Reddy",
+      "name": "Ayush kumar",
       "id_number": "2500032004",
       "section": "S34",
       "attendance_rate": 83.0,
@@ -115,7 +115,7 @@ const appData = {
     },
     {
       "student_id": 9,
-      "name": "Vikram Joshi",
+      "name": "Divyanshu",
       "id_number": "2500032005",
       "section": "S34",
       "attendance_rate": 71.6,
