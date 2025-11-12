@@ -331,6 +331,7 @@ class FaceAttendanceSystem {
         .withFaceLandmarks()
         .withFaceDescriptors();
       
+      console.log("Detections:", detections);
       console.log(`Detected ${detections.length} faces in capture ${this.captureCount}`);
       
       const detectedCountEl = document.getElementById("detectedCount");
